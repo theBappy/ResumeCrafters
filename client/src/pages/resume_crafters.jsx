@@ -16,6 +16,11 @@ import PersonalInfoForm from "../components/form-content/personal-info-form";
 import ResumePreview from "../components/resume-preview";
 import TemplateSelector from "../components/template-selector";
 import ColorPicker from "../components/color-picker";
+import ProfessionalSummaryForm from "../components/professional-summary-form";
+import ExperienceForm from "../components/experience-form";
+import EducationForm from "../components/education-form";
+import ProjectsForm from "../components/projects-form";
+import SkillsForm from "../components/skills-form";
 
 const ResumeCraftersPage = () => {
   const { resumeId } = useParams();
@@ -26,7 +31,7 @@ const ResumeCraftersPage = () => {
     professional_summary: "",
     experience: [],
     education: [],
-    project: [],
+    projects: [],
     skills: [],
     template: "classic",
     accent_color: "#3BB3F6",
@@ -174,6 +179,66 @@ const ResumeCraftersPage = () => {
                     }
                     removeBackground={removeBackground}
                     setRemoveBackground={setRemoveBackground}
+                  />
+                )}
+                {activeSection.id === "summary" && (
+                  <ProfessionalSummaryForm
+                    data={resumeData.professional_summary}
+                    onChange={(data) =>
+                      setResumeData((prev) => ({
+                        ...prev,
+                        professional_summary: data,
+                      }))
+                    }
+                    setResumeData={setResumeData}
+                  />
+                )}
+                {activeSection.id === "experience" && (
+                  <ExperienceForm
+                    data={resumeData.experience}
+                    onChange={(data) =>
+                      setResumeData((prev) => ({
+                        ...prev,
+                        experience: data,
+                      }))
+                    }
+                    setResumeData={setResumeData}
+                  />
+                )}
+                {activeSection.id === "education" && (
+                  <EducationForm
+                    data={resumeData.education}
+                    onChange={(data) =>
+                      setResumeData((prev) => ({
+                        ...prev,
+                        education: data,
+                      }))
+                    }
+                    setResumeData={setResumeData}
+                  />
+                )}
+                {activeSection.id === "projects" && (
+                  <ProjectsForm
+                    data={resumeData.projects}
+                    onChange={(data) =>
+                      setResumeData((prev) => ({
+                        ...prev,
+                        projects: data,
+                      }))
+                    }
+                    setResumeData={setResumeData}
+                  />
+                )}
+                {activeSection.id === "skills" && (
+                  <SkillsForm
+                    data={resumeData.skills}
+                    onChange={(data) =>
+                      setResumeData((prev) => ({
+                        ...prev,
+                        skills: data,
+                      }))
+                    }
+                    setResumeData={setResumeData}
                   />
                 )}
               </div>
