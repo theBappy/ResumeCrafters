@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
-import User from "../models/User.js";
 import jwt from "jsonwebtoken";
+import User from "../models/User.js";
+import Resume from "../models/Resume.js";
 
 const generateToken = (userId) => {
   if (!process.env.JWT_SECRET) throw new Error("JWT_SECRET missing");
@@ -83,6 +84,19 @@ export const getUserById = async (req, res) => {
     if (!user) return res.status(404).json({ message: "User not found" });
 
     return res.status(200).json({ user });
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+// controller for getting user resumes
+// GET: /api/users/resumes
+export const getUserResumes = async (req, res) => {
+  try {
+    const userId = req.userId;
+    // return user resumes
+    const resumes = await Resume.find({ userId });
+    return res.status(200).json({ resumes });
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }
