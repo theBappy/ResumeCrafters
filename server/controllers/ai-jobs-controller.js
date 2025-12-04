@@ -15,7 +15,7 @@ export const enhanceProfessionalSummary = async (req, res) => {
         {
           role: "system",
           content:
-            "You are expert in resume writing. Enhance the professional summary in 3-4 sentences, highlight key skills, experience and career objectives. Make it ATS-friendly. Return only the improved text.",
+            "You are expert in resume writing. Enhance the professional summary in 1-2 sentences, highlight key skills, experience and career objectives. Make it ATS-friendly. Return only the improved text.",
         },
         { role: "user", content: userContent },
       ],
@@ -24,6 +24,7 @@ export const enhanceProfessionalSummary = async (req, res) => {
     const enhancedContent = response.choices[0]?.message?.content || "";
     return res.status(200).json({ enhancedContent });
   } catch (error) {
+    console.error("AI error:", error.response?.data || error.message);
     return res.status(500).json({ message: error.message });
   }
 };
@@ -42,7 +43,7 @@ export const enhanceJobDescription = async (req, res) => {
         {
           role: "system",
           content:
-            "You are an expert in resume writing. Enhance this job description into 3-4 sentences, using action verbs & quantifiable achievements. ATS-friendly. Return only the text.",
+            "You are an expert in resume writing. Enhance this job description into 1-2 sentences, using action verbs & quantifiable achievements. ATS-friendly. Return only the text.",
         },
         { role: "user", content: userContent },
       ],
