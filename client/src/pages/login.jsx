@@ -1,9 +1,14 @@
 import React from "react";
 import { Lock, Mail, User2Icon } from "lucide-react";
+import apiAxiosInstance from "../configs/axios-api";
+import { useDispatch } from "react-redux";
+import { login } from "../app/features/auth-slice";
+import toast from "react-hot-toast";
 
 const LoginPage = () => {
   const query = new URLSearchParams(window.location.search);
   const urlState = query.get("state");
+  const dispatch = useDispatch();
 
   const [state, setState] = React.useState(urlState || "login");
 
@@ -22,7 +27,18 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login or register
+
+    try {
+      const { data } = await apiAxiosInstance.post(
+        `/api/users/${state}`,
+        formData
+      );
+      dispatch(login(data));
+      localStorage.setItem("token", data.token);
+      toast.success(data.message);
+    } catch (error) {
+      toast(error?.response?.data?.message || error.message);
+    }
   };
 
   const handleChange = (e) => {
@@ -40,9 +56,7 @@ const LoginPage = () => {
           {state === "login" ? "Login" : "Sign up"}
         </h1>
 
-        <p className="text-gray-500 text-sm mt-2">
-          Please {state} to continue
-        </p>
+        <p className="text-gray-500 text-sm mt-2">Please {state} to continue</p>
 
         {state !== "login" && (
           <div className="flex items-center mt-6 w-full bg-white border border-gray-300/80 h-12 rounded-full overflow-hidden pl-6 gap-2">
@@ -107,9 +121,7 @@ const LoginPage = () => {
           {state === "login"
             ? "Don't have an account?"
             : "Already have an account?"}{" "}
-          <span className="text-green-500 hover:underline">
-            click here
-          </span>
+          <span className="text-green-500 hover:underline">click here</span>
         </p>
       </form>
     </div>
