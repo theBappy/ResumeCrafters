@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { dummyResumeData } from "../assets/dummy-resume-data";
 import ResumePreview from "../components/resume-preview";
 import Loader from "../components/loader";
 import { ArrowLeftIcon } from "lucide-react";
+import apiAxiosInstance from "../configs/axios-api";
 
 const PreviewPage = () => {
   const { resumeId } = useParams();
@@ -11,10 +11,16 @@ const PreviewPage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const loadResume = async () => {
-    setResumeData(
-      dummyResumeData.find((resume) => resume._id === resumeId || null)
-    );
-    setIsLoading(false);
+    try {
+      const { data } = await apiAxiosInstance.get(
+        `/api/resumes/public/${resumeId}`
+      );
+      setResumeData(data.resume);
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
